@@ -3,7 +3,6 @@ import logo from './logo.svg';
 import './App.css';
 
 import { Tree } from 'antd';
-import ReactDOM from 'react-dom';
 
 
 const TreeNode = Tree.TreeNode;
@@ -13,12 +12,16 @@ class App extends Component {
   state = {
     response: []
   };
+
+  componentWillMount() {
+    document.title = "Node + React - ML states";
+  }
   
   componentDidMount() {
+
     this.getStates()
 
       .then(res => {
-          //console.log(res.express);
           this.setState({ response: res.express });
         }
       )
@@ -55,15 +58,12 @@ class App extends Component {
         return;
       }
 
-      console.log(treeNode.props.dataRef.type);
-
-      switch(treeNode.props.dataRef.type) {
+      switch(treeNode.props.dataRef.type) { //get the type of json object
           case "State":
               
               //Get cities
               this.getCities(treeNode.props.dataRef.id)
                 .then(res => {
-                    console.log(res.express);
                     treeNode.props.dataRef.children = [];
                     res.express.forEach(function(singleitem) {
                         treeNode.props.dataRef.children.push(singleitem);
@@ -84,7 +84,6 @@ class App extends Component {
 
               this.getNeighborhoods(treeNode.props.dataRef.id)
                 .then(res => {
-                    console.log(res.express);
                     treeNode.props.dataRef.children = [];
                     res.express.forEach(function(singleitem) {
                         treeNode.props.dataRef.children.push(singleitem);
@@ -126,7 +125,8 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">Node + React app integration</h1>
+          <h2 className="App-subtitle">Getting states, cities and neighborhoods from Brasil, thanks to the ML public APIs</h2>
         </header>
         
         <Tree showLine loadData={this.onLoadData}>
